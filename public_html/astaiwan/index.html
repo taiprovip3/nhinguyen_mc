@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="photo">
+    <br>
+    <button onclick="uploadImage()">Upload Image</button>
+    <br>
+    <img id="image">
+</body>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBEx0nc-ur7Jxmq_L2eqpjYL-IZqww_7MA",
+      authDomain: "nhinguyenv4-2692d.firebaseapp.com",
+      projectId: "nhinguyenv4-2692d",
+      storageBucket: "nhinguyenv4-2692d.appspot.com",
+      messagingSenderId: "814537083079",
+      appId: "1:814537083079:web:0fb976cdb58899bf9a96e2"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var storageRef = firebase.storage().ref();
+    storageRef.child('images/slideshow1.png').getDownloadURL().then(function(url){
+        document.querySelector("#image").src = url;
+    })
+    .catch(function(error){
+        console.error(error);
+    });
+
+    function uploadImage(){
+        const ref = firebase.storage().ref();
+        const file = document.querySelector("#photo").files[0];
+        const name = file.name;
+        const metadata = {
+            contentType:file.type 
+        }
+        const task = ref.child(name).put(file,metadata);
+        task
+            .then(snapshot => snapshot.ref.getDownloadURL())
+            .then(url => {
+                console.log(url)
+                alert("Image Uploaded Successfully")
+                const image = document.querySelector("#image")
+                image.src = url
+            })
+            .catch(console.error);
+    }
+</script>
+</html>

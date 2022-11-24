@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    <button id="btnDownload">Download</button>
+    <img src="" alt="DownloadedImage" id="myimg">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.4/firebase-app.js";
+        import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.9.4/firebase-storage.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDBi-wiXdEgOCTtcXO7w3K6G_bvTrhulng",
+          authDomain: "ultimatecloud-c4d19.firebaseapp.com",
+          projectId: "ultimatecloud-c4d19",
+          storageBucket: "ultimatecloud-c4d19.appspot.com",
+          messagingSenderId: "482916212450",
+          appId: "1:482916212450:web:47fee21680456e6ed588bb"
+        };
+      
+        const app = initializeApp(firebaseConfig);
+        
+        const storage = getStorage(app);
+
+        document.getElementById('btnDownload').addEventListener('click', function(){
+            getDownloadURL(ref(storage, 'Gitlab newbie git cmd.PNG'))
+            .then((url) => {
+                console.log(url);
+                // `url` is the download URL for 'images/stars.jpg'
+
+                // This can be downloaded directly:
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.onload = (event) => {
+                const blob = xhr.response;
+                };
+                xhr.open('GET', url);
+                xhr.send();
+
+                // Or inserted into an <img> element
+                const img = document.getElementById('myimg');
+                img.setAttribute('src', url);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        });
+      </script>
+</body>
+</html>
